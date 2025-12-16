@@ -64,14 +64,34 @@ public class InputSystem : MonoBehaviour
 
     }
 
+    void Ejercicio3()
+    {
+        if (Input.GetButtonUp("Horizontal"))
+        {
+            if (Input.GetAxis("Horizontal") > 0) transform.position = new Vector3(transform.position.x + 1, transform.position.y);
+            else transform.position = new Vector3(transform.position.x - 1, transform.position.y);
+        }
+        if (Input.GetButtonUp("Vertical"))
+        {
+            if (Input.GetAxis("Vertical") > 0) transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+            else transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
+        }
+
+        if (Input.GetKeyUp(KeyCode.R))
+        {
+            transform.position = new Vector3(0, 0.5f, 0);
+        }
+
+    }
+
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Ejercicio2();
+        Ejercicio3();
     }
+
 }
