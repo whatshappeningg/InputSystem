@@ -1,11 +1,26 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.UIElements;
 
 public class InputSystem : MonoBehaviour
 {
+    // Public attributes
     public float playerSpeed = 5f;
+    public float rotationSpeed = 90f;
     public Transform cameraTransform;
+
+    // Private attributes
+    private int _ejercicio = 0;
+    private bool _start = true;
+    private bool _input = false;
+    private bool _win = false;
+    private bool _lose = false;
+    private char sequence = '\0';
+    private char sequenceChosen = '\0';
+
 
     void Ejercicio1()
     {
@@ -84,6 +99,70 @@ public class InputSystem : MonoBehaviour
 
     }
 
+    void Ejercicio4()
+    {
+        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * Time.deltaTime * rotationSpeed);
+        transform.Translate(Vector3.right * Input.GetAxis("Horizontal") * Time.deltaTime * playerSpeed);
+        transform.Translate(Vector3.forward * Input.GetAxis("Vertical") * Time.deltaTime * playerSpeed);
+    }
+
+    void Ejercicio5()
+    {
+        char[] possibleInputs = { 'W', 'A', 'S', 'D' };
+
+        if (_start)
+        {
+            gameObject.GetComponent<Renderer>().material.color = Color.gray;
+            sequence = possibleInputs[UnityEngine.Random.Range(0, possibleInputs.Length)];
+            sequenceChosen = '\0';
+            print("La siguiente tecla es " + sequence);
+            print("Marca la tecla correcta...");
+
+            _start = false;
+            _input = true;
+        }
+        else if (_input)
+        {
+            if (sequenceChosen == '\0')
+            {
+                if (Input.GetKeyUp(KeyCode.W))
+                { sequenceChosen = 'W'; transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1); }
+                else if (Input.GetKeyUp(KeyCode.A))
+                { sequenceChosen = 'A'; transform.position = new Vector3(transform.position.x - 1, transform.position.y); }
+                else if (Input.GetKeyUp(KeyCode.S))
+                { sequenceChosen = 'S'; transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1); }
+                else if (Input.GetKeyUp(KeyCode.D))
+                { sequenceChosen = 'D'; transform.position = new Vector3(transform.position.x + 1, transform.position.y); }
+            }
+            else
+            {
+                print("Tecla pulsada: " + sequenceChosen);
+                _input = false;
+                if (sequence == sequenceChosen) _win = true;
+                else _lose = true;
+            }
+        }
+        else if (_lose)
+        {
+            print("No es correcto :(, la tecla correcta era " + sequence);
+            print("¡Juguemos otra vez!");
+            gameObject.GetComponent<Renderer>().material.color = Color.red;
+            sequence = '\0';
+            transform.position = new Vector3(0, 0.5f, 0);
+
+            _lose = false;
+            _start = true;
+        }
+        else if (_win)
+        {
+            print("¡Correcto!");
+            gameObject.GetComponent<Renderer>().material.color = Color.green;
+            _win = false;
+            _start = true;
+        }
+
+    }
+
     void Start()
     {
 
@@ -91,7 +170,7 @@ public class InputSystem : MonoBehaviour
 
     void Update()
     {
-        Ejercicio3();
+        Ejercicio5();
     }
 
 }
