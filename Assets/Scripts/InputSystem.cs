@@ -170,7 +170,32 @@ public class InputSystem : MonoBehaviour
 
     void Update()
     {
-        Ejercicio5();
+        if (Input.GetKeyUp(KeyCode.Alpha1)) _ejercicio = 1;
+        else if (Input.GetKeyUp(KeyCode.Alpha2)) _ejercicio = 2;
+        else if (Input.GetKeyUp(KeyCode.Alpha3)) _ejercicio = 3;
+        else if (Input.GetKeyUp(KeyCode.Alpha4)) _ejercicio = 4;
+        else if (Input.GetKeyUp(KeyCode.Alpha5)) _ejercicio = 5;
+
+        switch (_ejercicio)
+        {
+            case 1:
+                Ejercicio1();
+                break;
+            case 2:
+                Ejercicio2();
+                break;
+            case 3:
+                Ejercicio3();
+                break;
+            case 4:
+                Ejercicio4();
+                break;
+            case 5:
+                Ejercicio5();
+                break;
+            default:
+                break;
+        }
     }
 
 }
